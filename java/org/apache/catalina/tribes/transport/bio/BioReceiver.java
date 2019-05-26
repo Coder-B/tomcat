@@ -51,10 +51,13 @@ public class BioReceiver extends ReceiverBase implements Runnable {
             else throw new IOException(x.getMessage());
         }
         try {
+            // 获取host指定的InetAddress
             getBind();
+            // socket绑定到规定host和port
             bind();
             String channelName = "";
             if (getChannel().getName() != null) channelName = "[" + getChannel().getName() + "]";
+            // 本身Receiver 实现了Runnable
             Thread t = new Thread(this, "BioReceiver" + channelName);
             t.setDaemon(true);
             t.start();
@@ -102,6 +105,7 @@ public class BioReceiver extends ReceiverBase implements Runnable {
 
     @Override
     public void run() {
+        // Runnable run方法就是socket.listen
         try {
             listen();
         } catch (Exception x) {
@@ -117,6 +121,7 @@ public class BioReceiver extends ReceiverBase implements Runnable {
         setListen(true);
 
         while ( doListen() ) {
+            // 核心对象在accept得到的socket，与 task
             Socket socket = null;
             if ( getTaskPool().available() < 1 ) {
                 if ( log.isWarnEnabled() )

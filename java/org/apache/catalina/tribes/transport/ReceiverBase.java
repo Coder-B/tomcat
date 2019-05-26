@@ -66,6 +66,7 @@ public abstract class ReceiverBase implements ChannelReceiver, ListenCallback, R
     private boolean direct = true;
     private long tcpSelectorTimeout = 5000;
     //how many times to search for an available socket
+    // 在socket绑定指定port失败的时候会用到，参见bind(...)方法
     private int autoBind = 100;
     private int maxThreads = 15;
     private int minThreads = 6;
@@ -212,6 +213,7 @@ public abstract class ReceiverBase implements ChannelReceiver, ListenCallback, R
                         log.info(sm.getString("receiverBase.unable.bind", addr));
                         throw x;
                     }
+                    // 居然会尝试port++
                     port++;
                 }
             }
