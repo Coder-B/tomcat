@@ -103,6 +103,7 @@ public class BioReplicationTask extends AbstractRxTask {
                  * server before completing the request
                  * This is considered an asynchronous request
                  */
+                // ChannelData.sendAckAsync 读取channel flag，判断是否异步
                 if (ChannelData.sendAckAsync(msgs[i].getOptions())) sendAck(Constants.ACK_COMMAND);
                 try {
                     //process the message
@@ -128,6 +129,7 @@ public class BioReplicationTask extends AbstractRxTask {
     }
 
     /**
+     * drain channel 就是将socket中的input流内容读取出来。看下文中的解释是使用了java NIO 的特性
      * The actual code which drains the channel associated with
      * the given key.  This method assumes the key has been
      * modified prior to invocation to turn off selection
@@ -150,6 +152,7 @@ public class BioReplicationTask extends AbstractRxTask {
 
 
     /**
+     * 实际也是普通的写socket.outputstream
      * Send a reply-acknowledgment (6,2,3)
      * @param command The command to write
      */
